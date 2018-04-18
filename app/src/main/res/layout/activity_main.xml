@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewInfo"
+            type="com.antimage.entity.ViewInfo" />
+
+        <variable
+            name="presenter"
+            type="com.antimage.mactionsheet.MainPresenter"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{presenter.oneItemMenuShow}"
+            android:text="@{viewInfo.oneItemText}" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{presenter.twoItemMenuShow}"
+            android:text="@{viewInfo.twoItemText}" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{presenter.threeItemMenuShow}"
+            android:text="@{viewInfo.threeItemText}" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{presenter.fourItemMenuShow}"
+            android:text="@{viewInfo.fourItemText}" />
+    </LinearLayout>
+</layout>
+

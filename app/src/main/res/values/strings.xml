@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MActionSheet</string>
+    <string name="cancel">取消</string>
+    <string name="dismiss">消失</string>
+
+    <string name="first_item">第一个item</string>
+    <string name="second_item">第二个item</string>
+    <string name="third_item">第三个item</string>
+    <string name="fourth_item">第四个item</string>
+</resources>
