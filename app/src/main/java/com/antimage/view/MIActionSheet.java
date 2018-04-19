@@ -168,14 +168,14 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
 
     /**
      * 指定item更换北京
-     * @param drawable
+     * @param drawableId
      * @param position
      */
-    public MIActionSheet setTextBackground(int drawable, int position) {
+    public MIActionSheet setTextBackground(int drawableId, int position) {
         if (arrays == null || position >= arrays.length) return this;
         TextView textView = (TextView) container.getChildAt(position);
         if (textView == null) return this;
-        textView.setBackgroundResource(drawable);
+        textView.setBackgroundResource(drawableId);
         return this;
     }
 
