@@ -23,6 +23,7 @@ private void showActionSheet() {
     		}
 		});
 	}
+	actionSheet.show();
 }
 
 private void dismissActionSheet() {
