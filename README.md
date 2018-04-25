@@ -31,7 +31,7 @@ private void dismissActionSheet() {
 }
 ```
 
-###设置黑透部分是否允许点击关闭
+### 设置黑透部分是否允许点击关闭
 ```
 /**
  * 黑透部分是否允许点击关闭
@@ -44,7 +44,7 @@ actionSheet.setCanceledOnTouchOutside(boolean cancel)
 MActionSheet支持修改每一项的字号，字色，文字内容，背景。（需要通过传入resourceId的形式修改），所有方法的position都是从0开始，从上往下数，不包括最下方的取消button。
 
 
-###修改字色
+### 修改字色
 
 ```
 /**
@@ -55,7 +55,7 @@ MActionSheet支持修改每一项的字号，字色，文字内容，背景。�
 actionSheet.setTextColor(int colorId, int position)
 ```
 
-###修改字体
+### 修改字体
 
 ```
 /**
@@ -65,7 +65,7 @@ actionSheet.setTextColor(int colorId, int position)
  */
 actionSheet.setTextSize(int dimenId, int position)
 ```
-###修改文字内容
+### 修改文字内容
 
 ```
 /**
@@ -82,7 +82,7 @@ actionSheet.setText(String text, int position)
  */
 actionSheet.setText(int resId, int position)
 ```
-###修改背景
+### 修改背景
 ```
 /**
  * 指定item更换背景
@@ -91,7 +91,7 @@ actionSheet.setText(int resId, int position)
  */
 actionSheet.setTextBackground(int drawableId, int position)
 ```
-###设置item是否可用
+### 设置item是否可用
 ```
 /**
  * 设置view是否可用
