@@ -7,9 +7,22 @@ private MActionSheet actionSheet;
 
 private void showActionSheet() {
 	if (actionSheet == null) {
-		actionSheet = new MActionSheet(context)
-		.setItemArray(new int[] {R.string.xxx, R.string.yyy})
-		.setMenuItemClickListener(new MenuItemClickListener() {
+	   actionSheet = new MIActionSheet.Builder(this)
+        .setItemArray(new int[] {R.string.xxx, R.string.yyy}) // 请先设置itemArray
+        .setOnMenuItemClick(listener)
+        .setCancelButtonTitle(R.string.title)  // title默认文字“取消” 可以不设置
+        .setCancelTextColor(R.color.black)
+        .build();
+	}
+	actionSheet.setItemArray(new int[] {R.string.aaa, R.string.bbb}); // 如果需要修改item项，可以再次setItemArray。
+	actionSheet.show();
+}
+
+private void dismissActionSheet() {
+	actionSheet.dismiss();
+}
+
+OnMenuItemClickListener listener = new MenuItemClickListener() {
     		@Override
     		public void onItemClick(int resId) {
     			switch(resId) {
@@ -21,14 +34,8 @@ private void showActionSheet() {
     					break;
     			}
     		}
-		});
-	}
-	actionSheet.show();
-}
+		};
 
-private void dismissActionSheet() {
-	actionSheet.dismissMenu();
-}
 ```
 
 ### 设置黑透部分是否允许点击关闭

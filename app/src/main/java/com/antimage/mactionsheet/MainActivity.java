@@ -3,14 +3,13 @@ package com.antimage.mactionsheet;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.antimage.entity.ViewInfo;
 import com.antimage.mactionsheet.databinding.ActivityMainBinding;
 import com.antimage.view.MIActionSheet;
-import com.antimage.view.MenuItemClickListener;
+import com.antimage.view.OnMenuItemClickListener;
 
-public class MainActivity extends AppCompatActivity implements MainContract.MainView, MenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements MainContract.MainView, OnMenuItemClickListener {
 
     private MainPresenter mainPresenter;
 
@@ -34,11 +33,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     @Override
     public void showActionSheet(int[] itemArray) {
         if (actionSheet == null) {
-            actionSheet = new MIActionSheet(this);
-            actionSheet.setMenuItemClickListener(this);
+            actionSheet = new MIActionSheet.Builder(this)
+                    .setItemArray(itemArray)
+                    .setOnMenuItemClick(this)
+                    .build();
         }
-        actionSheet.setItemArray(itemArray)
-        .setTextColor(R.color.colorPrimary, 0);
+        actionSheet.setItemArray(itemArray);
+        actionSheet.setTextColor(R.color.colorPrimary, 0);
         int length = itemArray.length;
         switch (length) {
             case 1:
@@ -68,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
     @Override
     public void dismissActionSheet() {
-        actionSheet.dismissMenu();
+        actionSheet.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mainPresenter.destroy();
+        super.onDestroy();
     }
 }

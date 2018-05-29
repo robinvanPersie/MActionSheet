@@ -7,4 +7,6 @@ package com.antimage;
 public interface BasePresenter {
 
     void start();
+
+    void destroy();
 }

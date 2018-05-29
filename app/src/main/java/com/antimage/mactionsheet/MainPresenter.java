@@ -22,6 +22,12 @@ public class MainPresenter implements MainContract.Presenter {
 
     }
 
+    @Override
+    public void destroy() {
+        activity = null;
+        mView = null;
+    }
+
     public void oneItemMenuShow(View view) {
         int[] itemArray = {R.string.first_item};
         mView.showActionSheet(itemArray);

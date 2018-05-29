@@ -7,6 +7,10 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +35,7 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
     private int dip10;
     private int dip48;
 
-    public MIActionSheet(Context context) {
+    protected MIActionSheet(Context context) {
         super(context, R.style.ActionSheetTheme);
         mContext = context;
         Resources res = mContext.getResources();
@@ -85,33 +89,29 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
         animView = rootView.findViewById(R.id.action_sheet_anim_layout);
     }
 
-    public MIActionSheet setCancelButtonTitle(String text) {
+    public void setCancelButtonTitle(String text) {
         cancelBtn.setText(text);
-        return this;
     }
 
-    public MIActionSheet setCancelButtonTitle(int textId) {
+    public void setCancelButtonTitle(@StringRes int textId) {
         cancelBtn.setText(textId);
-        return this;
     }
 
-    public MIActionSheet setCancelTextColor(int colorId) {
+    public void setCancelTextColor(@ColorRes int colorId) {
         cancelBtn.setTextColor(mContext.getResources().getColor(colorId));
-        return this;
     }
 
     /**
      * 所有item文字都变色
      * @param colorId
      */
-    public MIActionSheet setAllTextColor(int colorId) {
+    public void setAllTextColor(@ColorRes int colorId) {
         textColor = mContext.getResources().getColor(colorId);
-        if (arrays == null || arrays.length == 0) return this;
+        if (arrays == null || arrays.length == 0) return;
         for (int i = 0; i < arrays.length; i++) {
             setTextColor(colorId, i);
         }
         setCancelTextColor(colorId);
-        return this;
     }
 
     /**
@@ -119,7 +119,7 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
      * @param colorId     颜色
      * @param position   位置
      */
-    public MIActionSheet setTextColor(int colorId, int position) {
+    public MIActionSheet setTextColor(@ColorRes int colorId, int position) {
         if (arrays == null || position >= arrays.length) return this;
         TextView textView = (TextView) container.getChildAt(position);
         if (textView == null) return this;
@@ -129,14 +129,14 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
 
     /**
      * 指定item更换字体大小
-     * @param dimen      字体大小
+     * @param dimenId    字体大小
      * @param position   位置
      */
-    public MIActionSheet setTextSize(int dimen, int position) {
+    public MIActionSheet setTextSize(@DimenRes int dimenId, int position) {
         if (arrays == null || position >= arrays.length) return this;
         TextView textView = (TextView) container.getChildAt(position);
         if (textView == null) return this;
-        textView.setTextSize(dimen);
+        textView.setTextSize(mContext.getResources().getDimensionPixelSize(dimenId));
         return this;
     }
 
@@ -158,7 +158,7 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
      * @param resId
      * @param position
      */
-    public MIActionSheet setText(int resId, int position) {
+    public MIActionSheet setText(@StringRes int resId, int position) {
         if (arrays == null || position >= arrays.length) return this;
         TextView textView = (TextView) container.getChildAt(position);
         if (textView == null) return this;
@@ -171,7 +171,7 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
      * @param drawableId
      * @param position
      */
-    public MIActionSheet setTextBackground(int drawableId, int position) {
+    public MIActionSheet setTextBackground(@DrawableRes int drawableId, int position) {
         if (arrays == null || position >= arrays.length) return this;
         TextView textView = (TextView) container.getChildAt(position);
         if (textView == null) return this;
@@ -221,12 +221,18 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
         animView.startAnimation(showAnim());
     }
 
-    public void dismissMenu() {
-        if (isShowing()) {
-            dismiss();
-            container.clearAnimation();
-        }
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        container.clearAnimation();
     }
+
+//    public void dismissMenu() {
+//        if (isShowing()) {
+//            dismiss();
+//
+//        }
+//    }
 
     private TranslateAnimation showAnim;
 
@@ -307,15 +313,15 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.action_sheet_bg_id:
-                dismissMenu();
+                dismiss();
                 break;
             case R.id.action_sheet_cancel_btn:
-                dismissMenu();
+                dismiss();
                 break;
             case R.id.action_sheet_item_id:
                 int resId = Integer.parseInt(v.getTag().toString());
-                if (menuItemClickListener != null) {
-                    menuItemClickListener.onItemClick(resId);
+                if (onMenuItemClickListener != null) {
+                    onMenuItemClickListener.onItemClick(resId);
                 }
                 break;
         }
@@ -338,9 +344,77 @@ public class MIActionSheet extends Dialog implements View.OnClickListener{
             imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
     }
 
-    public void setMenuItemClickListener(MenuItemClickListener $listener) {
-        menuItemClickListener = $listener;
+    public void setOnMenuItemClickListener(OnMenuItemClickListener $listener) {
+        onMenuItemClickListener = $listener;
     }
 
-    private MenuItemClickListener menuItemClickListener;
+    private OnMenuItemClickListener onMenuItemClickListener;
+
+    /**
+     * 指定某个item的样式，请在Build()后直接操作MIActionSheet对象
+     */
+    public static class Builder {
+
+        private Context mContext;
+        private int[] itemArray;
+        private OnMenuItemClickListener listener;
+        private int titleId;
+        private String titleText;
+        private int cancelTextColorId;
+        private int itemColorId;
+
+        public Builder(Context context) {
+            this.mContext = context;
+        }
+
+        public Builder setItemArray(int[] itemArray) {
+            this.itemArray = itemArray;
+            return this;
+        }
+
+        public Builder setOnMenuItemClick(OnMenuItemClickListener listener) {
+            this.listener = listener;
+            return this;
+        }
+
+        public Builder setCancelButtonTitle(@StringRes int resId) {
+            this.titleId = resId;
+            this.titleText = null;
+            return this;
+        }
+
+        public Builder setCancelButtonTitle(String title) {
+            this.titleText = title;
+            this.titleId = 0;
+            return this;
+        }
+
+        public Builder setCancelTextColor(@ColorRes int colorId) {
+            this.cancelTextColorId = colorId;
+            return this;
+        }
+
+        public Builder setAllTextColor(@ColorRes int colorId) {
+            this.itemColorId = colorId;
+            return this;
+        }
+
+        public MIActionSheet build() {
+            MIActionSheet actionSheet = new MIActionSheet(mContext);
+            actionSheet.setOnMenuItemClickListener(listener);
+            actionSheet.setItemArray(itemArray);
+            if (titleId != 0) {
+                actionSheet.setCancelButtonTitle(titleId);
+            } else if (titleText != null) {
+                actionSheet.setCancelButtonTitle(titleText);
+            }
+            if (cancelTextColorId != 0) {
+                actionSheet.setCancelTextColor(cancelTextColorId);
+            }
+            if (itemColorId != 0) {
+                actionSheet.setAllTextColor(itemColorId);
+            }
+            return actionSheet;
+        }
+    }
 }
